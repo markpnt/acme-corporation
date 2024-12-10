@@ -18,5 +18,4 @@ spring:
     enabled: true
     locations: classpath:db
     validate-on-migrate: true
-#    baseline-version: 0
     baseline-on-migrate: true
