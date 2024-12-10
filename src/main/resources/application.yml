@@ -2,7 +2,7 @@ spring:
   application:
     name: "acme-corporation"
   config:
-    import: .env
+    import: env.properties
 
   jpa:
     database: default
