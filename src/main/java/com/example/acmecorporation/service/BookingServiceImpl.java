@@ -1,9 +1,10 @@
 package com.example.acmecorporation.service;
 
+import com.example.acmecorporation.converter.BookingToBookingDto;
 import com.example.acmecorporation.domain.Booking;
 import com.example.acmecorporation.domain.Room;
 import com.example.acmecorporation.exception.BookingException;
-import com.example.acmecorporation.model.BookingDTO;
+import com.example.acmecorporation.model.BookingDto;
 import com.example.acmecorporation.model.BookingRequest;
 import com.example.acmecorporation.repository.BookingRepository;
 import com.example.acmecorporation.repository.RoomRepository;
@@ -15,6 +16,8 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.example.acmecorporation.converter.BookingToBookingDto.convert;
+
 @Service
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService{
@@ -22,32 +25,27 @@ public class BookingServiceImpl implements BookingService{
     private final BookingRepository bookingRepository;
     private final RoomRepository roomRepository;
     @Override
-    public List<BookingDTO> getBookingsByRoomAndDate(Long roomId, LocalDate date) {
+    public List<BookingDto> getBookingsByRoomAndDate(Long roomId, LocalDate date) {
         List<Booking> bookings = bookingRepository.findByRoom_IdAndDate(roomId, date);
         return bookings.stream()
-                .map(booking -> BookingDTO.builder()
-                        .id(booking.getId())
-                        .employeeEmail(booking.getEmployeeEmail())
-                        .startTime(booking.getStartTime())
-                        .endTime(booking.getEndTime()).build())
+                .map(BookingToBookingDto::convert)
                 .toList();
     }
 
     @Override
-    public void createBooking(BookingRequest request) {
+    public BookingDto createBooking(BookingRequest request) {
         Room room = roomRepository.findById(request.getRoomId())
                 .orElseThrow(() -> new IllegalArgumentException("Room not found"));
         validateBookingRequest(request);
 
-        Booking booking = Booking.builder()
-                .room(room)
-                .employeeEmail(request.getEmployeeEmail())
-                .date(request.getDate())
-                .startTime(request.getStartTime())
-                .endTime(request.getEndTime())
-                .build();
-
-        bookingRepository.save(booking);
+         Booking booking = bookingRepository.save(Booking.builder()
+                 .room(room)
+                 .employeeEmail(request.getEmployeeEmail())
+                 .date(request.getDate())
+                 .startTime(request.getStartTime())
+                 .endTime(request.getEndTime())
+                 .build());
+         return convert(booking);
     }
 
     /**

@@ -11,7 +11,7 @@ import java.time.LocalTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookingDTO {
+public class BookingDto {
     private Long id;
     private String employeeEmail;
     private LocalTime startTime;

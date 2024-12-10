@@ -2,7 +2,7 @@ package com.example.acmecorporation.service;
 
 import com.example.acmecorporation.domain.Booking;
 import com.example.acmecorporation.domain.Room;
-import com.example.acmecorporation.model.BookingDTO;
+import com.example.acmecorporation.model.BookingDto;
 import com.example.acmecorporation.model.BookingRequest;
 import com.example.acmecorporation.repository.BookingRepository;
 import com.example.acmecorporation.repository.RoomRepository;
@@ -50,7 +50,7 @@ class BookingServiceTest {
         when(bookingRepository.findByRoom_IdAndDate(roomId, date)).thenReturn(mockBookings);
 
         // Act
-        List<BookingDTO> result = bookingService.getBookingsByRoomAndDate(roomId, date);
+        List<BookingDto> result = bookingService.getBookingsByRoomAndDate(roomId, date);
 
         // Assert
         assertEquals(2, result.size());

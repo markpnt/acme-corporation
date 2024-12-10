@@ -1,11 +1,10 @@
 package com.example.acmecorporation.controller;
 
-import com.example.acmecorporation.model.BookingDTO;
+import com.example.acmecorporation.model.BookingDto;
 import com.example.acmecorporation.model.BookingRequest;
 import com.example.acmecorporation.service.BookingService;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,17 +28,16 @@ public class BookingController {
     private final BookingService bookingService;
 
     @GetMapping()
-    public ResponseEntity<List<BookingDTO>> getBookings(
+    public ResponseEntity<List<BookingDto>> getBookings(
             @RequestParam Long roomId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        List<BookingDTO> bookings = bookingService.getBookingsByRoomAndDate(roomId, date);
+        List<BookingDto> bookings = bookingService.getBookingsByRoomAndDate(roomId, date);
         return ResponseEntity.ok(bookings);
     }
 
     @PostMapping()
-    public ResponseEntity<Void> createBooking(@RequestBody @Validated BookingRequest request) {
-        bookingService.createBooking(request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<BookingDto> createBooking(@RequestBody @Validated BookingRequest request) {
+        return ResponseEntity.ok(bookingService.createBooking(request));
     }
 
     @DeleteMapping("/{id}")
