@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: "acme-corporation"
+  config:
+    import: .env
+
+  jpa:
+    database: default
+    generate-ddl: false
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  flyway:
+    enabled: true
+    locations: classpath:db
+    validate-on-migrate: true
+#    baseline-version: 0
+    baseline-on-migrate: true
